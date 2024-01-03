@@ -8,27 +8,35 @@ require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+// CONTROLLERS
+const bandsController = require('./controllers/bands_controller')
+app.use('/bands', bandsController)
+const eventsController = require('./controllers/events_controller')
+app.use('/events', eventsController)
+const stagesController = require('./controllers/stages_controller')
+app.use('/stages', stagesController)
+
 // SEQUELIZE CONNECTION
 // const sequelize = new Sequelize(process.env.PG_URI)
-// const sequelize = new Sequelize('music_tour', 'postgres', 'admin', {
-//     host: 'localhost',
-//     port: 5432,
-//     dialect: 'postgres',
-//  });
+const sequelize = new Sequelize('music_tour', 'postgres', 'admin', {
+    host: 'localhost',
+    port: 5432,
+    dialect: 'postgres',
+ });
 
-// try {
-//     sequelize.authenticate() 
-//     console.log(`Connected with Sequelize at ${process.env.PG_URI}`) 
-// } catch(err) {
-//     if (err instanceof sequelizeErrors.HostNotFoundError) {
-//       console.error('Host not found:', err);
-//       // Handle the HostNotFoundError or reject with it
-//       // For example, you might want to reject a Promise with this error
-//       return Promise.reject(new sequelizeErrors.HostNotFoundError(err));
-//     } else {
-//       console.error('Unable to connect to the database:', err);
-//     }
-// }
+try {
+    sequelize.authenticate() 
+    console.log(`Connected with Sequelize at ${process.env.PG_URI}`) 
+} catch(err) {
+    if (err instanceof sequelizeErrors.HostNotFoundError) {
+      console.error('Host not found:', err);
+      // Handle the HostNotFoundError or reject with it
+      // For example, you might want to reject a Promise with this error
+      return Promise.reject(new sequelizeErrors.HostNotFoundError(err));
+    } else {
+      console.error('Unable to connect to the database:', err);
+    }
+}
 
 // ROOT
 app.get('/', (req, res) => {

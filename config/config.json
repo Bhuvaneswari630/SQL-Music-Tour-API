@@ -3,7 +3,8 @@
     "username": "postgres",
     "password": "admin",
     "database": "music_tour",
-    "host": "127.0.0.1",
+    "host": "localhost",
+    "port": "5432",
     "dialect": "postgres"
   },
   "test": {
