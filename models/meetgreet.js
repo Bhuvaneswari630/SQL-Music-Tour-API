@@ -3,48 +3,47 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Event extends Model {
+  class MeetGreet extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Stage, StageEvent, SetTime }) {
+    static associate({ Band, Event }) {
       // define association here
-      Event.belongsToMany(Stage, {
-        foreignKey: "event_id",
-        as: "stages",
-        through: StageEvent
+      MeetGreet.belongsTo(Band, {
+        foreignKey: "band_id",
+        as: "band"
       })
-      Event.hasMany(SetTime, {
+      MeetGreet.belongsTo(Event, {
         foreignKey: "event_id",
-        as: "sset_times"
+        as: "event"
       })
     }
   }
-  Event.init({
-    event_id: {type: DataTypes.INTEGER,primaryKey: true, autoIncrement: true },
-    event_name: {
-      type: DataTypes.STRING,
+  MeetGreet.init({
+    meet_greet_id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    event_id: {
+      type: DataTypes.INTEGER,
       allowNull: false
     },
-    date: {
+    band_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
+    meet_start_time: {
       type: DataTypes.DATE,
       allowNull: false
     },
-    start_time: {
-      type: DataTypes.DATE,
-      allowNull: false
-    },
-    end_time: {
+    meet_end_time: {
       type: DataTypes.DATE,
       allowNull: false
     }
   }, {
     sequelize,
-    modelName: 'Event',
-    tableName: 'events',
+    modelName: 'MeetGreet',
+    tableName: 'meet_greets',
     timestamps: false
   });
-  return Event;
+  return MeetGreet;
 };
